@@ -10,11 +10,20 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: install
-#         run: yarn && cd site && yarn && cd ../
-        run: echo $NETLIFY_AUTH_TOKEN 
-        shell: bash
+        run: yarn && cd site && yarn && cd ../
         
               
       - name: setup node
@@ -37,7 +46,10 @@ jobs:
         run: yarn add netlify-cli -D
 
       - name: netlify deploy
-        run: netlify deploy --dir=site/dist --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
+        env: 
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: netlify deploy --dir=site/dist --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID 
 
     
 
