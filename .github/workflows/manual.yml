@@ -10,16 +10,22 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
         
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: init
         run: npm run init
 
-      - name: Cache
-        uses: actions/cache@v3.0.11
+
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          # A list of files, directories, and wildcard patterns to cache and restore
-          path: node_modules
-          key: node_modules
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      
 
       - name: setup node
         uses: actions/setup-node@v3
