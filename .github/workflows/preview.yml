@@ -1,0 +1,25 @@
+name: pr_preview
+on:
+  workflow_dispatch:
+
+jobs:
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: init
+        run: npm run init
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: build-site
+        run: yarn build:site
+
+      - name: list files
+        run: ls
+
