@@ -13,7 +13,7 @@ jobs:
 
       - name: install
 #         run: yarn && cd site && yarn && cd ../
-        run: echo token ${{ NETLIFY_AUTH_TOKEN }} 
+        run: echo $NETLIFY_AUTH_TOKEN 
         shell: bash
         
               
