@@ -8,19 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
+          
+      - name: checkout
+        uses: actions/checkout@master
+
+
+
+      - name: install
+        run: yarn && cd site && yarn && cd ../
+        
+              
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
           
-      - name: checkout
-        uses: actions/checkout@master
-
-      - name: install
-        run: yarn && cd site && yarn && cd ../
-        
-      
       - name: build-components
         run: yarn icon && yarn build:es && yarn build:css
 
