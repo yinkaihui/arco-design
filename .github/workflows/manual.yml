@@ -3,17 +3,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  intall: 
+  deploy-preview: 
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@master
-      
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -27,6 +21,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          
       - name: install
         run: yarn && cd site && yarn && cd ../
           
