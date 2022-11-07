@@ -9,6 +9,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
+      - name: test
+        env: 
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: echo "$NETLIFY_SITE_ID"
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -49,7 +54,7 @@ jobs:
         env: 
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: netlify deploy --dir=site/dist --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID 
+        run: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=site/dist
 
     
 
