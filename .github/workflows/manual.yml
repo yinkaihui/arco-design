@@ -11,8 +11,7 @@ jobs:
           
       - name: checkout
         uses: actions/checkout@master
-
-
+        run: echo $NETLIFY_AUTH_TOKEN 
 
       - name: install
         run: yarn && cd site && yarn && cd ../
