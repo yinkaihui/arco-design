@@ -7,31 +7,23 @@ jobs:
   build-site:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@master
-        
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: init
-        run: npm run init
-
-
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
       
-
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
+          
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: install
+        run: yarn && cd site && yarn && cd ../
+        
+      
+      - name: build-components
+        run: yarn icon && yarn build:es && yarn build:css
+
 
       - name: build-site
         run: yarn build:site
@@ -43,7 +35,7 @@ jobs:
         run: yarn add netlify-cli -D
 
       - name: netlify deploy
-        run: netlify deploy --dir=site/dist --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+        run: netlify deploy --dir=site/dist --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
 
     
 
