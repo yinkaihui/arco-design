@@ -37,7 +37,7 @@ jobs:
         run: yarn add netlify-cli -D
 
       - name: netlify deploy
-        run: netlify deploy --dir=site/dist
+        run: netlify deploy --dir=site/dist --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
 
     
 
