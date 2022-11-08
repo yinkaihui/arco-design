@@ -10,7 +10,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
 
-
       - name: setup node
         uses: actions/setup-node@v3
         with:
@@ -20,10 +19,10 @@ jobs:
       - name: install
         run: yarn && cd site && yarn && cd ../
           
-      - name: build-components
+      - name: build components
         run: yarn icon && yarn build:es && yarn build:css
 
-      - name: build-site
+      - name: build site
         run: yarn build:site
         
       - name: Upload site-dist Artifact
