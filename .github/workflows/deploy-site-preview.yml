@@ -61,8 +61,7 @@ jobs:
         env: 
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          PR_NUMBER: ${{ github.event.number }}
-        run: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=dist --alias=pr-${{ PR_NUMBER }}
+        run: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=dist --alias=pr-${{ github.event.number }}
 
   add-pr-comment: 
     runs-on: ubuntu-latest
@@ -86,7 +85,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           # Message to comment
           message: |
-            [click to preview](https://pr-${{ PR_NUMBER }}--arco-design.netlify.app)
+            [click to preview](https://pr-${{ github.event.number }}--arco-design.netlify.app)
 
     
 
