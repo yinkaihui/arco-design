@@ -1,7 +1,8 @@
 name: deploy-site-preview
 on:
- pull_request:
-    types: [opened, synchronize, reopened]
+#  pull_request:
+#     types: [opened, synchronize, reopened]
+ workflow_dispatch:
 
 jobs:
   build-site: 
@@ -84,9 +85,32 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           # Message to comment
           message: |
-            [📚 📚 Site Preview: ](https://pr-preview-${{ github.event.number }}--arco-design.netlify.app)
+            [📚 📚 Site Preview: https://pr-preview-${{ github.event.number }}--arco-design.netlify.app](https://pr-preview-${{ github.event.number }}--arco-design.netlify.app)
     
+  image-test:
+    runs-on: ubuntu-latest
+    needs: deploy-preview
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+        
+      - name: install
+        run: yarn 
 
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn' 
+
+      - name: gen screenshots
+        run: yarn run test:screenshots --domain=https://pr-preview-${{ github.event.number }}--arco-design.netlify.app
+
+      - name: ls
+        run: ll ./tests
+
+      - name: upload screenshots to argos-cli
+        run: npx @argos-ci/cli upload ./tests/__screenshots__
 
 
     
