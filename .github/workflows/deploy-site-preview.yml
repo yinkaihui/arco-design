@@ -102,6 +102,9 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn' 
+          
+      - name: build:cjs
+        run: yarn build:cjs
 
       - name: gen screenshots
 #         run: yarn run test:screenshots --domain=https://pr-preview-${{ github.event.number }}--arco-design.netlify.app
