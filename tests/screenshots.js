@@ -3,7 +3,7 @@ const Arco = require('../lib');
 
 // const components = Object.keys(Arco).filter((key) => typeof Arco[key] === 'object');
 
-const _domain = process.argv?.slice(2) || 'http://127.0.0.1/'; // --domain=https://a.b.com
+const _domain = process.argv?.[2] || 'http://127.0.0.1/'; // --domain=https://a.b.com
 
 const baseurl = _domain.replace('--domain=', '');
 
@@ -45,10 +45,10 @@ const baseurl = _domain.replace('--domain=', '');
     if (componentNames.length) {
       genComponentScreenshots(componentNames.pop());
     } else {
-        // eslint-disable-next-line
-        console.log('end________');
-        await browser.close()
-        process.exit(0);
+      // eslint-disable-next-line
+      console.log('end________');
+      await browser.close();
+      process.exit(0);
     }
   };
 
