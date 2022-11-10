@@ -100,5 +100,8 @@ jobs:
 
       - name: ls
         run: ll ./tests
+        
+      - name: upload screenshots to argos-cli
+        run: npx @argos-ci/cli upload ./tests/__screenshots__
 
 
