@@ -95,6 +95,12 @@ jobs:
           # Destination path
           path: ./
       
+      - name: ls
+        run: ls
+        
+      - name: site start
+        run: yarn dev:site
+        
       - name: gen screenshots
         run: yarn run test:screenshots
 
