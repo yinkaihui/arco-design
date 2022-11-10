@@ -34,6 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
          name: build_dist
+         if-no-files-found: error 
          path: |
           icon
           es
@@ -46,6 +47,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
+      
+      - name: install
+        run: yarn run dependencies
       
       - name: setup node
         uses: actions/setup-node@v3
@@ -80,6 +84,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
+        
+      - name: install
+        run: yarn run dependencies
 
       - name: setup node
         uses: actions/setup-node@v3
