@@ -1,7 +1,9 @@
 name: pr_check
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+
+  workflow_dispatch:
 
 jobs:
   component-build:
