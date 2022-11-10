@@ -69,7 +69,7 @@ jobs:
         run: yarn build:es
         
       - name: build:css
-        run: yarn build:es
+        run: yarn build:css
         
       - name: site start
         run: yarn dev:site
