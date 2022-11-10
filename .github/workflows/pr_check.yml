@@ -34,7 +34,10 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
          name: build_dist
-         path: (icon|es|dist|lib)
+         path: ｜
+          icon
+          es
+          lib
 
 
   jest-test:
