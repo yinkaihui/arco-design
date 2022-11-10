@@ -3,8 +3,12 @@ const Arco = require('../lib');
 
 // const components = Object.keys(Arco).filter((key) => typeof Arco[key] === 'object');
 
+const _domain = process.argv?.slice(2) || 'http://127.0.0.1/; // --domain=https://a.b.com
+
+const baseurl = _domain.replace('--domain=', '');
+
 (async () => {
-  const baseURL = 'http://localhost:9000/react';
+  const baseURL = `${baseurl}/react`;
   const browser = await playwright.chromium.launch({});
   const componentNames = Object.keys(Arco).filter((key) => typeof Arco[key] === 'object');
 
