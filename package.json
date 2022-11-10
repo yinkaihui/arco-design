@@ -31,6 +31,7 @@
     "test:client": "arco-scripts test:client",
     "test:node": "arco-scripts test:node --silent=false",
     "test:watch": "arco-scripts test:client --silent=false --collectCoverage=false --watch",
+    "test:screenshots": "node ./tests/screenshots.js",
     "test": "cross-env NODE_ENV=test npm-run-all build:cjs test:client test:node",
     "color": "node ./scripts/compileColors.js",
     "icon": "cd icon && rimraf react-icon/ && rimraf react-icon-cjs && cd build/ && node generate.js && node genDemo.js",
@@ -118,7 +119,8 @@
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^24.0.0",
     "svgo": "^2.3.0",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "playwright": "^1.27.1"
   },
   "dependencies": {
     "@arco-design/color": "^0.4.0",

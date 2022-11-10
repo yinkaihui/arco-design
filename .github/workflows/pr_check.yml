@@ -4,7 +4,7 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  jest-test:
+  component-build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -12,6 +12,7 @@ jobs:
 
       - name: install
         run: yarn run dependencies
+
       - name: setup node
         uses: actions/setup-node@v3
         with:
@@ -26,6 +27,34 @@ jobs:
 
       - name: build:es
         run: yarn build:es
+            
+      - name: Upload build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+         name: build_dist
+         path: (icon|es|dist|lib)
+
+
+  jest-test:
+    runs-on: ubuntu-latest
+    needs: component-build
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+      
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+      
+      - name: Download build Artifact
+        uses: actions/download-artifact@v3.0.1
+        with:
+          # Artifact name
+          name: build_dist
+          # Destination path
+          path: ./
 
       - name: mock-time
         uses: szenius/set-timezone@v1.0
@@ -39,3 +68,32 @@ jobs:
 
       - name: test:node
         run: yarn test:node
+
+  screenshots-test:
+    runs-on: ubuntu-latest
+    needs: component-build
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Download build Artifact
+        uses: actions/download-artifact@v3.0.1
+        with:
+          # Artifact name
+          name: build_dist
+          # Destination path
+          path: ./
+      
+      - name: gen screenshots
+        run: yarn run test:screenshots
+
+      - name: ls
+        run: ll ./tests
+
+
