@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  component-build:
+  jest-test:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -29,41 +29,7 @@ jobs:
 
       - name: build:es
         run: yarn build:es
-            
-      - name: Upload build Artifact
-        uses: actions/upload-artifact@v3.1.1
-        with:
-         name: build_dist
-         if-no-files-found: error 
-         path: |
-          icon
-          es
-          lib
 
-
-  jest-test:
-    runs-on: ubuntu-latest
-    needs: component-build
-    steps:
-      - name: checkout
-        uses: actions/checkout@master
-      
-      - name: install
-        run: yarn run dependencies
-      
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
-      
-      - name: Download build Artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          # Artifact name
-          name: build_dist
-          # Destination path
-          path: ./
 
       - name: mock-time
         uses: szenius/set-timezone@v1.0
@@ -80,7 +46,6 @@ jobs:
 
   screenshots-test:
     runs-on: ubuntu-latest
-    needs: component-build
     steps:
       - name: checkout
         uses: actions/checkout@master
@@ -94,16 +59,17 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
-      - name: Download build Artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          # Artifact name
-          name: build_dist
-          # Destination path
-          path: ./
-      
-      - name: ls
-        run: ls
+      - name: run-icon
+        run: yarn icon
+
+      - name: build:cjs
+        run: yarn build:cjs
+
+      - name: build:es
+        run: yarn build:es
+        
+      - name: build:css
+        run: yarn build:es
         
       - name: site start
         run: yarn dev:site
