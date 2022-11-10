@@ -110,10 +110,6 @@ jobs:
 #         run: yarn run test:screenshots --domain=https://pr-preview-${{ github.event.number }}--arco-design.netlify.app
         run: yarn run test:screenshots --domain=https://pr-preview-1551--arco-design.netlify.app/
 
-
-      - name: ls
-        run: ll ./tests
-
       - name: upload screenshots to argos-cli
         run: npx @argos-ci/cli upload ./tests/__screenshots__
 
