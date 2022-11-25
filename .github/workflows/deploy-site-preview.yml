@@ -32,7 +32,7 @@ jobs:
           cache: 'yarn'
 
       - name: gen online screenshots
-        run: yarn run test:screenshots --domain=https://pr-preview-${{ PreviewID }}--arco-design.netlify.app
+        run: yarn run test:screenshots --domain=https://pr-preview-${{ env.PreviewID }}--arco-design.netlify.app
 
       - name: upload screenshots to argos-cli
         run: npx @argos-ci/cli upload ./tests/__screenshots__
