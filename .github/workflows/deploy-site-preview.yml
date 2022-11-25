@@ -1,105 +1,38 @@
 name: deploy-site-preview
 on:
- pull_request:
+  pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
-  build-site: 
+  image-test:
     runs-on: ubuntu-latest
+    environment: pr-test
     steps:
-      - name: checkout
-        uses: actions/checkout@master
+      - name: get PreviewID
+        run: |
+          if ${{ github.event_name == 'pull_request' }}; then
+            echo "PreviewID=${{ github.event.number }}" >> $GITHUB_ENV
+          else
+            echo "PreviewID=main" >> $GITHUB_ENV
+          fi
 
-      - name: setup node
-        uses: actions/setup-node@v3
+      - name: checkout
+        uses: actions/checkout@v3
         with:
-          node-version: 16
-          cache: 'yarn'
-          
+          fetch-depth: 2
+
       - name: install
-        run: yarn && cd site && yarn && cd ../
-          
-      - name: build components
-        run: yarn icon && yarn build:es && yarn build:css
-
-      - name: build site
-        run: yarn build:site
-        
-      - name: Upload site-dist Artifact
-        uses: actions/upload-artifact@v3.1.1
-        with:
-         name: site-dist
-         path: site/dist
-        
-
-  deploy-preview: 
-    runs-on: ubuntu-latest
-    needs: build-site
-    steps:
-      - name: checkout
-        uses: actions/checkout@master
+        run: yarn
 
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
-          
-      - name: Download site-dist Artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          # Artifact name
-          name: site-dist
-          # Destination path
-          path: dist/
-      
-      - name: netlify install
-        run: yarn add netlify-cli -D
 
-      - name: netlify deploy
-        env: 
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          PR_NUMBER: ${{ github.event.number }}
-        run: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=dist --alias=pr-${{ PR_NUMBER }}
+      - name: gen online screenshots
+        run: yarn run test:screenshots --domain=https://pr-preview-${{ env.PreviewID }}--arco-design.netlify.app
 
-  add-pr-comment: 
-    runs-on: ubuntu-latest
-    needs: deploy-preview
-    steps:
-      - name: checkout
-        uses: actions/checkout@master
-
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn' 
-          
-      - name: PR Comment
-        uses: github-actions-up-and-running/pr-comment@v1.0.1
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-        with:
-          # GITHUB_TOKEN secret
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          # Message to comment
-          message: |
-            [click to preview](https://pr-${{ PR_NUMBER }}--arco-design.netlify.app)
-
-    
-
-
-
-    
-
-
-
-
-
-
-
-    
-
-
-
+      - name: upload screenshots to argos-cli
+        run: npx @argos-ci/cli upload ./tests/__screenshots__
