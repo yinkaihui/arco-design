@@ -1,7 +1,9 @@
 name: pr_check
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+
+  workflow_dispatch:
 
 jobs:
   jest-test:
@@ -12,6 +14,7 @@ jobs:
 
       - name: install
         run: yarn run dependencies
+
       - name: setup node
         uses: actions/setup-node@v3
         with:
@@ -27,6 +30,7 @@ jobs:
       - name: build:es
         run: yarn build:es
 
+
       - name: mock-time
         uses: szenius/set-timezone@v1.0
         with:
@@ -39,3 +43,44 @@ jobs:
 
       - name: test:node
         run: yarn test:node
+
+  screenshots-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+        
+      - name: install
+        run: yarn run dependencies
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: run-icon
+        run: yarn icon
+
+      - name: build:cjs
+        run: yarn build:cjs
+
+      - name: build:es
+        run: yarn build:es
+        
+      - name: build:css
+        run: yarn build:css
+        
+      - name: site start
+        run: yarn dev:site
+        
+      - name: gen screenshots
+        run: yarn run test:screenshots
+
+      - name: ls
+        run: ll ./tests
+        
+      - name: upload screenshots to argos-cli
+        run: npx @argos-ci/cli upload ./tests/__screenshots__
+
+
