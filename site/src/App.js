@@ -8,14 +8,16 @@ import {
   Module,
 } from '@arco-materials/site-utils';
 import AOS from 'aos';
-import Home from './pages/home';
-import Customer from './pages/customer';
+// import Home from './pages/home';
+// import Customer from './pages/customer';
 import page from './page';
 import { GlobalContext, GlobalNoticeContext } from './context';
 import navbarProps from './utils/navbarProps';
 import { goPath, resetI18nLocalStorage } from './utils/i18n';
 import UserNavbarBorderStyle from './hooks/useNavbarBorderStyle';
 import { EventMap } from './pages/home/utils/eventMap';
+
+const onlyReactDoc = true;
 
 export default function App() {
   const { lang, user, rtl, toggleRtl } = useContext(GlobalContext);
@@ -96,10 +98,10 @@ export default function App() {
       />
       <Navbar.GlobalNotice onHeightChange={setNoticeHeight} lang={lang} />
       <Switch>
-        <Route path="/" exact component={Home} />
+        {/* <Route path="/" exact component={Home} />
         <Route path="/en-US" exact component={Home} />
         <Route path="/showcase/en-US" component={Customer} />
-        <Route path="/showcase" component={Customer} />
+        <Route path="/showcase" component={Customer} /> */}
         <Route path="*" component={page} />
       </Switch>
     </div>
