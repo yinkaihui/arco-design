@@ -15,6 +15,7 @@ jobs:
       - image: cimg/base:stable
     resource_class: xlarge
     working_directory: ~/repo
+    resource_class: large
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
