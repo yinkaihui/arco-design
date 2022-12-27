@@ -23,7 +23,7 @@
     "build": "arco-scripts build:component && yarn build:dist:dev && yarn build:css:dev",
     "dev": "arco-scripts dev:component",
     "dev:site": "arco-scripts dev:site --port 9000",
-    "build:site": "arco-scripts build:site",
+    "build:site": "NODE_OPTIONS=--max-old-space-size=3072 arco-scripts build:site",
     "demo": "start-storybook -p 6006",
     "changelog": "arco-scripts changelog",
     "eslint": "eslint tests/ components/ --fix --cache --quiet --ext .js,.jsx,.ts,.tsx",
