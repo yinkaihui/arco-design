@@ -23,6 +23,7 @@ jobs:
           install-yarn: true
           node-version: '16.13'
       - run: node --version & yarn --version
+      - run: npm i lerna -g
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
