@@ -42,7 +42,7 @@ jobs:
           command: yarn icon && yarn build:es && yarn build:css
       - run:
           name: build site
-          command: yarn build:site
+          command: NODE_OPTIONS=--max-old-space-size=8192 yarn build:site
       - run:
           name: netlify install
           command: yarn add netlify-cli -D
