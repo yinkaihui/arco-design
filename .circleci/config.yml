@@ -48,7 +48,7 @@ jobs:
           command: yarn add netlify-cli -D
       - run:
           name: netlify deploy
-          command: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=site/dist --alias=pr-preview-${{ CIRCLE_PR_NUMBER }}
+          command: netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID  --dir=site/dist --alias=pr-preview-${CIRCLE_PR_NUMBER}
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
